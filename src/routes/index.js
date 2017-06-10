@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import colors from '../constants/colors'
-import { Error404, Features,  Playlists } from '../components'
+import { Error404 } from '../components'
 import {
   Login,
   Callback,
@@ -43,18 +43,15 @@ class Routes extends React.Component {
     return (
       <Router>
         <ThemeProvider theme={colors}>
+        <div>
           <Switch>
             <Route path="/" component={Login} exact />
             <Route path="/callback" component={Callback} exact />
-            {/* { this.props.loggedIn &&
-              <Home />
-            } */}
-
-            <Route path="/browse" component={Home}  />
-            {/* <Route path="/collection" component={Home} /> */}
-
+            <Route path="/browse" component={Home} />
+            <Route path="/collection" component={Home} />
             <Route component={Error404} />
           </Switch>
+        </div>
         </ThemeProvider>
       </Router>
     )

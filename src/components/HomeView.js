@@ -1,24 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import pure from 'recompose/pure'
 import styled  from 'styled-components'
 import theme from '../constants/theme'
-import { Route, Link, Redirect, Switch } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import { Features,  Playlists } from '../components'
 
-function HomeView() {
+function HomeView({ pathname }) {
   return (
     <Wrapper>
       <Sidenav>
         <li><Link to="/browse/feature">Features</Link></li>
-        <li><Link to="/browse/playlists">Playlists</Link></li>
+        <li><Link to="/collection/playlists">Playlists</Link></li>
       </Sidenav>
-      {/* <Switch> */}
-        {/* <Redirect from='/browse' to='/browse/feature' />
-        <Redirect from='/collection' to='/collection/playlists'  /> */}
-        <Route path="/browse/feature" component={Features} exact />
-        <Route path="/browse/playlists" component={Playlists} exact />
-      {/* </Switch> */}
+
+        <Route path="/browse/feature" component={Features} />
+        <Route path="/collection/playlists" component={Playlists} />
 
       <BottomBar />
     </Wrapper>
@@ -26,10 +22,10 @@ function HomeView() {
 }
 
 HomeView.propTypes = {
-
+  pathname: PropTypes.string.isRequired,
 }
 
-export default pure(HomeView)
+export default HomeView
 
 //styled-components
 const Wrapper = styled.div`
