@@ -9,14 +9,23 @@ function HomeView({ pathname }) {
   return (
     <Wrapper>
       <Sidenav>
-        <li><Link to="/browse/feature">Features</Link></li>
-        <li><Link to="/collection/playlists">Playlists</Link></li>
+
+
+
+        <Link to="/browse/feature">
+          <NavLink active={pathname.includes('browse')}>Features</NavLink>
+        </Link>
+        <Link to="/collection/playlists">
+          <NavLink active={pathname.includes('collection')}>Playlists</NavLink>
+        </Link>
       </Sidenav>
 
         <Route path="/browse/feature" component={Features} />
         <Route path="/collection/playlists" component={Playlists} />
 
-      <BottomBar />
+      <BottomBar>
+        <PlayerText>Html5 player coming soon</PlayerText>
+      </BottomBar>
     </Wrapper>
   )
 }
@@ -52,6 +61,8 @@ const Sidenav = styled.div`
   overflow: auto;
   will-change: transform;
   z-index: 2;
+  padding: 24px;
+  box-sizing: border-box;
 `
 
 const BottomBar = styled.div`
@@ -60,13 +71,22 @@ const BottomBar = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 115px;
+  height: 100px;
   z-index: 3;
-  border-bottom: 25px solid ${theme.primary};
   box-sizing: border-box;
 `
 
-
+const NavLink = styled.span`
+  color: ${(props) => props.active ? theme.primary : theme.white}
+`
+const PlayerText = styled.div`
+  color: ${theme.white};
+  font-weight: 300;
+  position: fixed;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+`
 
 
 
