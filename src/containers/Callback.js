@@ -19,9 +19,9 @@ class Callback extends React.Component {
     if (this.props.location.hash) {
       let tkn = this.parseHash('access_token')
       let exp = this.parseHash('expires_in') / 60
-      lscache.set('sporifyTkn', tkn, exp)
+      lscache.set('spotifyCPTkn', tkn, exp)
       this.props.makeLogin()
-      this.props.history.push('/browse/feature')
+      this.props.history.push('/create')
     } else {
       let query = queryString.parse(this.props.location.search)
       let description = query.error ?

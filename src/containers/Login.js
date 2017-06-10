@@ -13,7 +13,7 @@ class Login extends React.Component {
 
   componentWillMount() {
     if (this.props.loggedIn) {
-      this.props.history.push('/browse/feature')
+      this.props.history.push('/create')
     }
   }
 

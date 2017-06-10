@@ -1,6 +1,6 @@
 {
-  "name": "sporify",
-  "description": "spotify like app",
+  "name": "spotifyCP",
+  "description": "Spotify Crazy Playlist",
   "version": "0.1.0",
   "author": "delvallejonatan ",
   "dependencies": {

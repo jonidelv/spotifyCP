@@ -32,7 +32,7 @@ class Routes extends React.Component {
   }
 
   checkTkn = () => {
-    if (!!lscache.get('sporifyTkn')) {
+    if (!!lscache.get('spotifyCPTkn')) {
       this.props.makeLogin()
     } else {
       this.props.makeLogout()
@@ -47,8 +47,7 @@ class Routes extends React.Component {
           <Switch>
             <Route path="/" component={Login} exact />
             <Route path="/callback" component={Callback} exact />
-            <Route path="/browse" component={Home} />
-            <Route path="/collection" component={Home} />
+            <Route path="/create" component={Home} exact />
             <Route component={Error404} />
           </Switch>
         </div>

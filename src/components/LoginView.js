@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import pure from 'recompose/pure'
 import styled, { css }  from 'styled-components'
-import loginBackground from '../assets/login-background.jpg'
-import checkmark from '../assets/checkmark.png'
+import bg from '../assets/bg.png'
 import logo from '../assets/logo.png'
 import theme from '../constants/theme'
 
@@ -16,31 +15,15 @@ function LoginView({ onPressLoginBtn, errorDescription }) {
             <Logo />
             <LoginText>Login using your Spotify credentials</LoginText>
             <LoginBtn onClick={onPressLoginBtn}>Login</LoginBtn>
-            <ForgotPassword
-              href={'https://www.spotify.com/it/password-reset/'}
-              target={'_blank'}
-            >
-              Forgot Password ?
-            </ForgotPassword>
             { errorDescription &&
               <ErrorText>{errorDescription}</ErrorText>
             }
           </Form>
           <Slogan>
-            <Title>Get the perfect Music Right Now</Title>
-            <Subtitle>Listen to millions of songs for free</Subtitle>
-            <div>
-              <Checkmark />
-              <CheckmarkText>
-                Search and discover music that you will love
-              </CheckmarkText>
-            </div>
-            <div>
-              <Checkmark />
-              <CheckmarkText>
-                Create playlists with your favorite music
-              </CheckmarkText>
-            </div>
+            <Title>Get the perfect Playlist Right Now</Title>
+            <Subtitle>
+              Generate a playlist where the first letter of each song co-defines with the album name
+            </Subtitle>
           </Slogan>
         </Container>
       </Overlay>
@@ -65,11 +48,14 @@ const Wrapper = styled.div`
   left: 0;
   height: 100%;
   width: 100%;
-  background-image: url(${loginBackground});
-  background-size: cover;
+  background-image: url(${bg});
+  background-size: 150%;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 1;
+  @media (max-width: 800px) {
+    background-size: cover;
+  }
 `
 const Overlay = styled.div`
   position: fixed;
@@ -80,11 +66,14 @@ const Overlay = styled.div`
   height: 100%;
   width: 100%;
   z-index: 2;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, .75);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  @media (max-width: 768px) {
+    overflow: scroll;
+  }
 `
 const Container = styled.div`
   display: flex;
@@ -95,9 +84,6 @@ const Container = styled.div`
   margin: auto;
   @media (max-width: 768px) {
     flex-direction: column;
-  }
-  @media (max-width: 500px) {
-    overflow: scroll;
   }
 `
 
@@ -112,7 +98,7 @@ const Share = css`
 const Form = styled.div`
   ${Share};
   padding-right: 20px;
-  padding: 70px 50px 70px;
+  padding: 20px 50px 70px;
   flex: 1;
   @media (max-width: 768px) {
     padding: 70px 50px 20px 50px;
@@ -150,41 +136,29 @@ const Title = styled.h1`
   font-weight: 500;
   margin-bottom: 35px;
   line-height: 55px;
+  @media (max-width: 550px) {
+    font-size: 35px;
+  }
+  @media (max-width: 375px) {
+    margin-bottom: 30px;
+    font-size: 28px;
+    line-height: 35px;
+  }
 `
 
 const Subtitle = styled.h2`
   font-size: 28px;
   margin-bottom: 35px;
   font-weight: 200;
-`
-
-const Checkmark = styled.span`
-  width: 30px;
-  height: 25px;
-  margin-right: 15px;
-  background-image: url(${checkmark});
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 10px;
-  display: inline-block;
-  vertical-align: top;
-  @media (max-width: 400px) {
-    display: none;
+  font-weight: 400;
+  line-height: 35px;
+  padding-right: 20px;
+  @media (max-width: 550px) {
+    font-size: 18px;
   }
-`
-
-const CheckmarkText = styled.span`
-  font-size: 16px;
-  margin-bottom: 10px;
-  margin-top: 7px;
-  display: inline-block;
-  vertical-align: top;
-  @media (max-width: 450px) {
+  @media (max-width: 375px) {
     font-size: 14px;
-  }
-  @media (max-width: 400px) {
-    display: none;
+    line-height: 25px;
   }
 `
 
@@ -201,11 +175,14 @@ const LoginText = styled.p`
   font-size: 16px;
   text-align: center;
   margin-bottom: 20px;
+  @media (max-width: 400px) {
+    line-height: 25px;
+  }
 `
 
 const LoginBtn = styled.button`
   background-color: transparent;
-  width: 99%;
+  width: 100%;
   height: 40px;
   border-radius: 20px;
   outline: 0;
@@ -220,17 +197,6 @@ const LoginBtn = styled.button`
     border-color: ${theme.primary};
     color: ${theme.white};
     background-color: ${theme.primary};
-  }
-`
-
-const ForgotPassword = styled.a`
-  cursor: pointer;
-  margin-top: 25px;
-  display: block;
-  font-size: 12px;
-  text-align: center;
-  &:hover {
-    text-decoration: underline;
   }
 `
 

@@ -25,20 +25,11 @@ class Home extends React.Component {
       this.props.history.push('/')
       return
     }
-    let pathname = this.props.location.pathname
-    if (pathname === '/browse' || pathname === '/browse/') {
-      this.props.history.push('/browse/feature')
-    }
-    if (pathname === '/collection' || pathname === '/collection/') {
-      this.props.history.push('/collection/playlists')
-    }
   }
 
   render() {
     return (
-      <HomeView
-        pathname={this.props.location.pathname}
-      />
+      <HomeView />
     )
   }
 }
