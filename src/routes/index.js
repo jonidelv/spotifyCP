@@ -7,7 +7,7 @@ import { Error404 } from '../components'
 import {
   Login,
   Callback,
-  Home,
+  Create,
 } from '../containers'
 import lscache from 'lscache'
 
@@ -47,7 +47,7 @@ class Routes extends React.Component {
           <Switch>
             <Route path="/" component={Login} exact />
             <Route path="/callback" component={Callback} exact />
-            <Route path="/create" component={Home} exact />
+            <Route path="/create" component={Create} exact />
             <Route component={Error404} />
           </Switch>
         </div>

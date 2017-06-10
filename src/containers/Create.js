@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { HomeView } from '../components'
+import { CreateView } from '../components'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as homeActions from '../actions/home'
+import * as CreateActions from '../actions/create'
 
-class Home extends React.Component {
+class Create extends React.Component {
 
   static propTypes = {
     loggedIn: PropTypes.bool.isRequired,
@@ -29,7 +29,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <HomeView />
+      <CreateView />
     )
   }
 }
@@ -41,10 +41,10 @@ function mapStateToProps (state) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators(homeActions, dispatch)
+  return bindActionCreators(CreateActions, dispatch)
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Home)
+)(Create)

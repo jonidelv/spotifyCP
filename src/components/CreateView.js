@@ -3,18 +3,18 @@ import React from 'react'
 import styled  from 'styled-components'
 import theme from '../constants/theme'
 
-function HomeView() {
+function CreateView() {
   return (
     <Wrapper>
     </Wrapper>
   )
 }
 
-HomeView.propTypes = {
+CreateView.propTypes = {
 
 }
 
-export default HomeView
+export default CreateView
 
 //styled-components
 const Wrapper = styled.div`
