@@ -22,7 +22,7 @@ function LoginView({ onPressLoginBtn, errorDescription }) {
           <Slogan>
             <Title>Get the perfect Playlist Right Now</Title>
             <Subtitle>
-              Generate a playlist where the first letter of each song co-defines with the album name
+              Generate a playlist where the first letter of each song match the album name
             </Subtitle>
           </Slogan>
         </Container>
