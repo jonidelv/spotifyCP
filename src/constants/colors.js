@@ -2,7 +2,8 @@ export default {
   primary:                       '#07d159',
   white:                         '#fff',
   black:                         '#000',
-  darkBg:                        'rgba(0, 0, 0, .9)',
   errorCode:                     '#d03b0b',
-  background:                     'linear-gradient(rgb(90, 72, 62), rgb(9, 7, 6) 85%)',
+  background:                    'linear-gradient(rgb(18, 18, 18), rgb(7, 7, 7) 85%)',
+  inputBg:                       '#242424',
+  greyText:                      'hsla(0,0%,100%,.5)',
 }

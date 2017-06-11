@@ -40,7 +40,7 @@ export default pure(LoginView)
 
 //styled-components
 const Wrapper = styled.div`
-  background: ${theme.darkBg};
+  background: ${theme.background};
   position: fixed;
   top: 0;
   bottom: 0;
@@ -182,6 +182,7 @@ const LoginText = styled.p`
 
 const LoginBtn = styled.button`
   background-color: transparent;
+  letter-spacing: 1.5px;
   width: 100%;
   height: 40px;
   border-radius: 20px;

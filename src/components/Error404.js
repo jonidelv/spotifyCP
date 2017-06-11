@@ -18,7 +18,7 @@ export default pure(Error404)
 
 //styled-components
 const Wrapper = styled.div`
-  background: ${theme.darkBg};
+  background: ${theme.background};
   position: fixed;
   top: 0;
   bottom: 0;
