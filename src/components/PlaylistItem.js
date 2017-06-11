@@ -10,7 +10,10 @@ function PlaylistItem({ title, artist, album, duration, order }) {
         <NameContainer>
           <Order>{order}.</Order>
           <div>
-            <Title>{title}</Title>
+            <Title>
+              <Strong>{title[0]}</Strong>
+              {title.substring(1)}
+            </Title>
             <Description>{`${artist} - ${album}`}</Description>
           </div>
         </NameContainer>
@@ -52,7 +55,7 @@ const NameContainer = styled.div`
 const Order = styled.div`
   font-size: 17px;
   margin-right: 20px;
-  margin-top: 1px;
+  margin-top: 2px;
   color: ${theme.greyText};
   font-weight: 300;
 `
@@ -77,6 +80,12 @@ const Duration = styled.div`
   font-size: 16px;
   color: ${theme.greyText};
   font-weight: 300;
-  margin-top: 1px;
+  margin-top: 2px;
   width: 45px;
+`
+
+const Strong = styled.span`
+  color: ${theme.primary};
+  font-size: 20px;
+  font-weight: 400;
 `

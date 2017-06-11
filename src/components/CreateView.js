@@ -1,57 +1,50 @@
 import React from 'react'
-//import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import styled  from 'styled-components'
 import theme from '../constants/theme'
 import { Playlist, Spinner } from '../components'
 
-const tracks = [{
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 222200,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 222200,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 224210,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 292200,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 222200,
-}]
-
-function CreateView() {
+function CreateView({
+  inputValue,
+  onInputChange,
+  clearInputValue,
+  playlistName,
+  fetchingTracks,
+  tracks,
+  generatingPlaylist,
+}) {
   return (
     <Wrapper>
       <InputBox>
         <Label for='name'>Write the playlist title here</Label>
-        <ClearInput>X</ClearInput>
+        { inputValue.length > 1 &&
+          <ClearInput onClick={clearInputValue}>X</ClearInput>
+        }
         <Input
           id='name'
           placeholder='Write here...'
+          value={inputValue}
+          onChange={(value) => onInputChange(value)}
         />
-        <ErrorText>Just letter (A-Z) is supported</ErrorText>
+        { /[^a-z ]/i.test(inputValue) &&
+          <ErrorText>Just letter (A-Z) is supported</ErrorText>
+        }
       </InputBox>
       <PlaylistBox>
         <div>
-          <PlaylistTitle>PlaylistTitle</PlaylistTitle>
-          <Spinner loading height={30} />
+          <PlaylistName>{playlistName}</PlaylistName>
+          { fetchingTracks &&
+            <Spinner loading height={30} />
+          }
         </div>
         <Playlist tracks={tracks} />
         <div>
-          <GenerateBtn>Generate</GenerateBtn>
-          <Spinner loading height={35} />
+          { tracks.length > 1 &&
+            <GenerateBtn>Generate</GenerateBtn>
+          }
+          { generatingPlaylist &&
+            <Spinner loading height={35} />
+          }
         </div>
       </PlaylistBox>
     </Wrapper>
@@ -59,7 +52,13 @@ function CreateView() {
 }
 
 CreateView.propTypes = {
-
+  onInputChange: PropTypes.func.isRequired,
+  clearInputValue: PropTypes.func.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  playlistName: PropTypes.string.isRequired,
+  fetchingTracks: PropTypes.bool.isRequired,
+  tracks: PropTypes.array.isRequired,
+  generatingPlaylist: PropTypes.bool.isRequired,
 }
 
 export default CreateView
@@ -152,7 +151,7 @@ const PlaylistBox = styled.div`
   }
 `
 
-const PlaylistTitle = styled.h1`
+const PlaylistName = styled.h1`
   color: ${theme.primary};
   font-size: 30px;
   line-height: 1.2;

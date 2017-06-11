@@ -15,7 +15,7 @@ function Spinner({ loading, height }) {
 
 Spinner.propTypes = {
   loading: PropTypes.bool.isRequired,
-  height: PropTypes.bool,
+  height: PropTypes.number,
 }
 
 export default Spinner
