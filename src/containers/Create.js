@@ -12,16 +12,19 @@ class Create extends React.Component {
     changeInputValue: PropTypes.func.isRequired,
     clearInputValue: PropTypes.func.isRequired,
     changePlaylistName: PropTypes.func.isRequired,
+    fetchUser: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     inputValue: PropTypes.string.isRequired,
     playlistName: PropTypes.string.isRequired,
     fetchingTracks: PropTypes.bool.isRequired,
     tracks: PropTypes.array.isRequired,
     generatingPlaylist: PropTypes.bool.isRequired,
+    errorFetchingDescription: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
     this.renderTask()
+    this.props.fetchUser()
   }
 
   componentWillUpdate() {
@@ -29,10 +32,7 @@ class Create extends React.Component {
   }
 
   renderTask = () => {
-    if (!this.props.loggedIn) {
-      this.props.history.push('/')
-      return
-    }
+    if (!this.props.loggedIn ) this.props.history.push('/')
   }
 
   onInputChange = (e) => {
@@ -55,6 +55,7 @@ class Create extends React.Component {
         fetchingTracks={this.props.fetchingTracks}
         tracks={this.props.tracks}
         generatingPlaylist={this.props.generatingPlaylist}
+        errorFetchingDescription={this.props.errorFetchingDescription}
       />
     )
   }
@@ -68,6 +69,7 @@ function mapStateToProps (state) {
     fetchingTracks: state.create.fetchingTracks,
     tracks: state.create.tracks,
     generatingPlaylist: state.create.generatingPlaylist,
+    errorFetchingDescription: state.create.errorFetchingDescription,
   }
 }
 
@@ -77,6 +79,7 @@ function mapDispatchToProps (dispatch) {
     changeInputValue: actions.changeInputValue,
     clearInputValue: actions.clearInputValue,
     changePlaylistName: actions.changePlaylistName,
+    fetchUser: actions.fetchUser,
   }
 }
 

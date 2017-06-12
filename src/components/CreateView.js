@@ -12,6 +12,7 @@ function CreateView({
   fetchingTracks,
   tracks,
   generatingPlaylist,
+  errorFetchingDescription,
 }) {
   return (
     <Wrapper>
@@ -31,6 +32,9 @@ function CreateView({
         }
       </InputBox>
       <PlaylistBox>
+        { errorFetchingDescription &&
+          <ErrorText>{errorFetchingDescription}</ErrorText>
+        }
         <div>
           <PlaylistName>{playlistName}</PlaylistName>
           { fetchingTracks &&
@@ -59,6 +63,7 @@ CreateView.propTypes = {
   fetchingTracks: PropTypes.bool.isRequired,
   tracks: PropTypes.array.isRequired,
   generatingPlaylist: PropTypes.bool.isRequired,
+  errorFetchingDescription: PropTypes.string.isRequired,
 }
 
 export default CreateView

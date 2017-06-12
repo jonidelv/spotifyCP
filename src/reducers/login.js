@@ -2,11 +2,13 @@ import {
   SAVE_ERROR_DESCRIPTION,
   MAKE_LOGIN,
   MAKE_LOGOUT,
+  SAVE_USER_ID,
 } from '../constants/actionTypes'
 
 const initialState = {
   loggedIn: false,
   errorDescription: '',
+  userId: '',
 }
 
 export default function login(state = initialState, action) {
@@ -29,6 +31,15 @@ export default function login(state = initialState, action) {
       return {
         ...state,
         loggedIn: false,
+        errorDescription: '',
+        userId: '',
+      }
+
+    case SAVE_USER_ID:
+      return {
+        ...state,
+        userId: action.payload,
+        errorDescription: '',
       }
 
     default:

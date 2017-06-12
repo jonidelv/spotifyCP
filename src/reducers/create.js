@@ -2,6 +2,8 @@ import {
   CHANGE_INPUT_VALUE,
   CLEAR_INPUT_VALUE,
   CHANGE_PLAYLIST_NAME,
+  ERROR_FETCHING,
+  CLEAR_ERROR_FETCHING,
 } from '../constants/actionTypes'
 
 const tracks = [{
@@ -37,6 +39,7 @@ const initialState = {
   playlistName: '',
   fetchingTracks: false,
   generatingPlaylist: false,
+  errorFetchingDescription: '',
   tracks,
 }
 
@@ -60,6 +63,18 @@ export default function create(state = initialState, action) {
       return {
         ...state,
         playlistName: action.payload,
+      }
+
+    case ERROR_FETCHING:
+      return {
+        ...state,
+        errorFetchingDescription: action.payload,
+      }
+
+    case CLEAR_ERROR_FETCHING:
+      return {
+        ...state,
+        errorFetchingDescription: '',
       }
 
     default:
