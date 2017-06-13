@@ -11,7 +11,7 @@ class Create extends React.Component {
   static propTypes = {
     changeInputValue: PropTypes.func.isRequired,
     clearInputValue: PropTypes.func.isRequired,
-    changePlaylistName: PropTypes.func.isRequired,
+    fetchTracks: PropTypes.func.isRequired,
     fetchUser: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     inputValue: PropTypes.string.isRequired,
@@ -24,7 +24,6 @@ class Create extends React.Component {
 
   componentWillMount() {
     this.renderTask()
-    this.props.fetchUser()
   }
 
   componentWillUpdate() {
@@ -38,11 +37,15 @@ class Create extends React.Component {
   onInputChange = (e) => {
     let value = e.target.value
     this.props.changeInputValue(value)
-    if (!/[^a-z ]/i.test(value)) this.props.changePlaylistName(value)
+    if (!/[^a-z ]/i.test(value)) this.props.fetchTracks(value)
   }
 
   clearInputValue = () => {
     this.props.clearInputValue()
+  }
+
+  onGeneratePlaylist = () => {
+    this.props.fetchUser()
   }
 
   render() {
@@ -56,6 +59,7 @@ class Create extends React.Component {
         tracks={this.props.tracks}
         generatingPlaylist={this.props.generatingPlaylist}
         errorFetchingDescription={this.props.errorFetchingDescription}
+        onGeneratePlaylist={this.onGeneratePlaylist}
       />
     )
   }
@@ -78,7 +82,7 @@ function mapDispatchToProps (dispatch) {
   return {
     changeInputValue: actions.changeInputValue,
     clearInputValue: actions.clearInputValue,
-    changePlaylistName: actions.changePlaylistName,
+    fetchTracks: actions.fetchTracks,
     fetchUser: actions.fetchUser,
   }
 }

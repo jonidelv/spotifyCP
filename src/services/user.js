@@ -1,7 +1,7 @@
-import api from '../api'
+import api from './api'
 const userService = {}
 
-userService.get = function () {
+userService.get = function() {
   return api.get('/v1/me')
     .then((response) => response.data)
 }

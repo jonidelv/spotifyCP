@@ -4,34 +4,11 @@ import {
   CHANGE_PLAYLIST_NAME,
   ERROR_FETCHING,
   CLEAR_ERROR_FETCHING,
+  LOADING_TRACKS,
+  TRACKS_LOADED,
+  PUSH_NEW_TRACK,
+  GENERATING_PLAYLIST,
 } from '../constants/actionTypes'
-
-const tracks = [{
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 222200,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 222200,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 224210,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 292200,
-}, {
-  title: 'never stop',
-  artist: 'asdek',
-  album: 'never stop',
-  duration: 222200,
-}]
 
 const initialState = {
   inputValue: '',
@@ -40,7 +17,8 @@ const initialState = {
   fetchingTracks: false,
   generatingPlaylist: false,
   errorFetchingDescription: '',
-  tracks,
+  tracksMap: {},
+  tracks: [],
 }
 
 export default function create(state = initialState, action) {
@@ -57,6 +35,7 @@ export default function create(state = initialState, action) {
         ...state,
         inputValue: '',
         playlistName: '',
+        tracks: [],
       }
 
     case CHANGE_PLAYLIST_NAME:
@@ -75,6 +54,30 @@ export default function create(state = initialState, action) {
       return {
         ...state,
         errorFetchingDescription: '',
+      }
+
+    case LOADING_TRACKS:
+      return {
+        ...state,
+        fetchingTracks: true,
+      }
+
+    case TRACKS_LOADED:
+      return {
+        ...state,
+        fetchingTracks: false,
+      }
+
+    case PUSH_NEW_TRACK:
+      return {
+        ...state,
+        tracks: [...state.tracks, action.payload],
+      }
+
+    case GENERATING_PLAYLIST:
+      return {
+        ...state,
+        generatingPlaylist: action.payload,
       }
 
     default:

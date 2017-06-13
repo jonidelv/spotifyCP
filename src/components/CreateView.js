@@ -13,12 +13,13 @@ function CreateView({
   tracks,
   generatingPlaylist,
   errorFetchingDescription,
+  onGeneratePlaylist,
 }) {
   return (
     <Wrapper>
       <InputBox>
         <Label for='name'>Write the playlist title here</Label>
-        { inputValue.length > 1 &&
+        {  inputValue.length > 1 && !fetchingTracks &&
           <ClearInput onClick={clearInputValue}>X</ClearInput>
         }
         <Input
@@ -43,8 +44,13 @@ function CreateView({
         </div>
         <Playlist tracks={tracks} />
         <div>
-          { tracks.length > 1 &&
-            <GenerateBtn>Generate</GenerateBtn>
+          { !fetchingTracks && tracks.length > 1 &&
+            <GenerateBtn
+              onClick={onGeneratePlaylist}
+              disabled={generatingPlaylist}
+            >
+              Generate
+            </GenerateBtn>
           }
           { generatingPlaylist &&
             <Spinner loading height={35} />
@@ -58,6 +64,7 @@ function CreateView({
 CreateView.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   clearInputValue: PropTypes.func.isRequired,
+  onGeneratePlaylist: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
   playlistName: PropTypes.string.isRequired,
   fetchingTracks: PropTypes.bool.isRequired,

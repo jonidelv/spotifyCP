@@ -65,7 +65,7 @@ const Title = styled.div`
   color: ${theme.white};
   font-weight: 300;
   text-transform: capitalize;
-  padding-right: 10px;
+  padding-right: 15px;
 `
 
 const Description = styled.div`
@@ -74,14 +74,14 @@ const Description = styled.div`
   font-weight: 300;
   text-transform: capitalize;
   margin-top: 5px;
-  padding-right: 10px;
+  padding-right: 15px;
 `
 const Duration = styled.div`
   font-size: 16px;
   color: ${theme.greyText};
   font-weight: 300;
   margin-top: 2px;
-  width: 45px;
+  width: 55px;
 `
 
 const Strong = styled.span`
