@@ -23,7 +23,7 @@ class Login extends React.Component {
     let redirect = encodeURIComponent(callback)
     let base = 'https://accounts.spotify.com/'
     let client = '2b4ed4588a8040098b2b70149e79c948'
-    let scope = 'user-read-private user-library-read user-read-email user-top-read playlist-read-private'
+    let scope = 'user-read-private user-library-read user-top-read playlist-modify-public'
     let scopeUri = encodeURIComponent(scope)
     let url = `${base}authorize?client_id=${client}&redirect_uri=${redirect}&scope=${scopeUri}&response_type=token`
     window.location.replace(url)

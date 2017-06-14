@@ -15,6 +15,7 @@ function Playlist({ tracks }) {
             artist={track.artist}
             album={track.album}
             duration={track.duration}
+            link={track.link}
           />
         ))
       }
@@ -29,6 +30,6 @@ Playlist.propTypes = {
 export default Playlist
 
 //styled-components
-const Wrapper = styled.div`
+const Wrapper = styled.ol`
   margin: 50px 0;
 `

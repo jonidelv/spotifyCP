@@ -17,7 +17,6 @@ const initialState = {
   fetchingTracks: false,
   generatingPlaylist: false,
   errorFetchingDescription: '',
-  tracksMap: {},
   tracks: [],
 }
 

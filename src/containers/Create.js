@@ -8,11 +8,19 @@ import * as CreateActions from '../actions/create'
 
 class Create extends React.Component {
 
+  constructor () {
+    super()
+    this.state = {
+      isDeleting: false,
+    }
+  }
+
   static propTypes = {
     changeInputValue: PropTypes.func.isRequired,
     clearInputValue: PropTypes.func.isRequired,
     fetchTracks: PropTypes.func.isRequired,
-    fetchUser: PropTypes.func.isRequired,
+    generatePlaylist: PropTypes.func.isRequired,
+    tracksLoaded: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     inputValue: PropTypes.string.isRequired,
     playlistName: PropTypes.string.isRequired,
@@ -32,12 +40,37 @@ class Create extends React.Component {
 
   renderTask = () => {
     if (!this.props.loggedIn ) this.props.history.push('/')
+    if (this.isFetchingTracks()) {
+      this.props.tracksLoaded()
+    }
+  }
+
+  isFetchingTracks = () => {
+    return (this.props.playlistName.replace(/ /g, '').length - 1) === this.props.tracks.length
+  }
+
+  isKeyDownDelete = (e) => {
+    if (e.keyCode === 8) {
+      this.setState({
+        isDeleting: true,
+      })
+    } else {
+      this.setState({
+        isDeleting: false,
+      })
+    }
   }
 
   onInputChange = (e) => {
+    let isDeleting = this.state.isDeleting
+    if (isDeleting) {
+      return this.clearInputValue()
+    }
     let value = e.target.value
     this.props.changeInputValue(value)
-    if (!/[^a-z ]/i.test(value)) this.props.fetchTracks(value)
+    if (!/[^a-z ]/i.test(value)) {
+      this.props.fetchTracks(value, (value.length -1))
+    }
   }
 
   clearInputValue = () => {
@@ -45,7 +78,8 @@ class Create extends React.Component {
   }
 
   onGeneratePlaylist = () => {
-    this.props.fetchUser()
+    this.props.generatePlaylist()
+
   }
 
   render() {
@@ -56,10 +90,11 @@ class Create extends React.Component {
         clearInputValue={this.clearInputValue}
         playlistName={this.props.playlistName}
         fetchingTracks={this.props.fetchingTracks}
-        tracks={this.props.tracks}
+        tracks={this.props.tracks.sort((a, b) => (a.order - b.order))}
         generatingPlaylist={this.props.generatingPlaylist}
         errorFetchingDescription={this.props.errorFetchingDescription}
         onGeneratePlaylist={this.onGeneratePlaylist}
+        isKeyDownDelete={this.isKeyDownDelete}
       />
     )
   }
@@ -74,6 +109,7 @@ function mapStateToProps (state) {
     tracks: state.create.tracks,
     generatingPlaylist: state.create.generatingPlaylist,
     errorFetchingDescription: state.create.errorFetchingDescription,
+    deleting: state.create.deleting,
   }
 }
 
@@ -83,7 +119,8 @@ function mapDispatchToProps (dispatch) {
     changeInputValue: actions.changeInputValue,
     clearInputValue: actions.clearInputValue,
     fetchTracks: actions.fetchTracks,
-    fetchUser: actions.fetchUser,
+    generatePlaylist: actions.generatePlaylist,
+    tracksLoaded: actions.tracksLoaded,
   }
 }
 

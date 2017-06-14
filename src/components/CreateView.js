@@ -14,6 +14,7 @@ function CreateView({
   generatingPlaylist,
   errorFetchingDescription,
   onGeneratePlaylist,
+  isKeyDownDelete,
 }) {
   return (
     <Wrapper>
@@ -27,6 +28,8 @@ function CreateView({
           placeholder='Write here...'
           value={inputValue}
           onChange={(value) => onInputChange(value)}
+          onKeyDown={(value) => isKeyDownDelete(value)}
+          disabled={generatingPlaylist}
         />
         { /[^a-z ]/i.test(inputValue) &&
           <ErrorText>Just letter (A-Z) is supported</ErrorText>
@@ -52,9 +55,7 @@ function CreateView({
               Generate
             </GenerateBtn>
           }
-          { generatingPlaylist &&
-            <Spinner loading height={35} />
-          }
+          <Spinner loading={generatingPlaylist} height={35} />
         </div>
       </PlaylistBox>
     </Wrapper>
@@ -65,6 +66,7 @@ CreateView.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   clearInputValue: PropTypes.func.isRequired,
   onGeneratePlaylist: PropTypes.func.isRequired,
+  isKeyDownDelete: PropTypes.func.isRequired,
   inputValue: PropTypes.string.isRequired,
   playlistName: PropTypes.string.isRequired,
   fetchingTracks: PropTypes.bool.isRequired,

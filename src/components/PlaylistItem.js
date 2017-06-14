@@ -2,28 +2,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled  from 'styled-components'
 import theme from '../constants/theme'
+import millisToMinutes from '../utils/millisToMinutes'
 
-function PlaylistItem({ title, artist, album, duration, order }) {
+function PlaylistItem({ title, artist, album, duration, order, link }) {
   return (
-    <ol>
-      <Track>
-        <NameContainer>
-          <Order>{order}.</Order>
-          <div>
-            <Title>
-              <Strong>{title[0]}</Strong>
-              {title.substring(1)}
-            </Title>
-            <Description>{`${artist} - ${album}`}</Description>
-          </div>
-        </NameContainer>
-        <div>
-          <Duration>
-            {`${parseInt(duration/1000/60, 10)} : ${parseInt(duration / 1000 % 60, 10)}`}
-          </Duration>
-        </div>
-      </Track>
-    </ol>
+    <Track>
+      <NameContainer>
+        <Order>{order}.</Order>
+        <Link href={link} target={'_blank'}>
+          <Title>
+            <Strong>{title[0]}</Strong>
+            {title.substring(1)}
+          </Title>
+          <Description>{`${artist} - ${album}`}</Description>
+        </Link>
+      </NameContainer>
+      <div>
+        <Duration>{millisToMinutes(duration)}</Duration>
+      </div>
+    </Track>
   )
 }
 
@@ -33,6 +30,7 @@ PlaylistItem.propTypes = {
   album: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
   order: PropTypes.number.isRequired,
+  link: PropTypes.string.isRequired,
 }
 
 export default PlaylistItem
@@ -58,6 +56,7 @@ const Order = styled.div`
   margin-top: 2px;
   color: ${theme.greyText};
   font-weight: 300;
+  width: 22px;
 `
 
 const Title = styled.div`
@@ -66,6 +65,9 @@ const Title = styled.div`
   font-weight: 300;
   text-transform: capitalize;
   padding-right: 15px;
+  &:hover {
+    color: ${theme.primary};
+  }
 `
 
 const Description = styled.div`
@@ -76,6 +78,11 @@ const Description = styled.div`
   margin-top: 5px;
   padding-right: 15px;
 `
+
+const Link = styled.a`
+  display: block;
+`
+
 const Duration = styled.div`
   font-size: 16px;
   color: ${theme.greyText};
