@@ -3,11 +3,10 @@ import {
   CLEAR_INPUT_VALUE,
   CHANGE_PLAYLIST_NAME,
   ERROR_FETCHING,
-  CLEAR_ERROR_FETCHING,
-  LOADING_TRACKS,
-  TRACKS_LOADED,
   PUSH_NEW_TRACK,
   GENERATING_PLAYLIST,
+  TRACKS_BEING_FETCHED,
+  IS_DELETING,
 } from '../constants/actionTypes'
 import { createAction } from 'redux-actions'
 import userService from '../services/user'
@@ -19,11 +18,10 @@ export const changeInputValue = createAction(CHANGE_INPUT_VALUE)
 export const clearInputValue = createAction(CLEAR_INPUT_VALUE)
 export const changePlaylistName = createAction(CHANGE_PLAYLIST_NAME)
 export const errorFetching = createAction(ERROR_FETCHING)
-export const clearErrorFetching = createAction(CLEAR_ERROR_FETCHING)
-export const loadingTracks = createAction(LOADING_TRACKS)
-export const tracksLoaded = createAction(TRACKS_LOADED)
 export const pushNewTrack = createAction(PUSH_NEW_TRACK)
 export const generatingPlaylist = createAction(GENERATING_PLAYLIST)
+export const tracksBeingFetched = createAction(TRACKS_BEING_FETCHED)
+export const isDeleting = createAction(IS_DELETING)
 
 export function generatePlaylist() {
   return (dispatch, getState) => {
@@ -48,7 +46,6 @@ export function generatePlaylist() {
         dispatch(generatingPlaylist(false))
         dispatch(errorFetching(`${err} try again later`))
       })
-
   }
 }
 
@@ -57,21 +54,22 @@ export function fetchTracks(playlistName, idx, isDeleting) {
     dispatch(changePlaylistName(playlistName))
     let playlistNameLastCh = playlistName.substr(-1)
     if (playlistNameLastCh && playlistNameLastCh !== ' ') {
-      dispatch(loadingTracks())
+      dispatch(tracksBeingFetched(true))
       _getSeacrchService(playlistNameLastCh, dispatch)
         .then((track) => {
-          let trackToSave = {
-            title: track.name,
-            artist: track.artists[0].name,
-            album: track.album.name,
-            duration: track.duration_ms,
-            id: track.id,
-            order: idx,
-            link: track.external_urls.spotify,
-            uri: track.uri,
+          if (getState().create.playlistName) {
+            dispatch(pushNewTrack({
+              title: track.name,
+              artist: track.artists[0].name,
+              album: track.album.name,
+              duration: track.duration_ms,
+              id: track.id,
+              order: idx,
+              link: track.external_urls.spotify,
+              uri: track.uri,
+            }))
           }
-          dispatch(pushNewTrack(trackToSave))
-          dispatch(clearErrorFetching())
+          dispatch(errorFetching(''))
         })
         .catch((err) => {
           dispatch(errorFetching(`${err} try again later`))

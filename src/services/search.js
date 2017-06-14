@@ -1,3 +1,4 @@
+import apiEndpoints from '../constants/apiEndpoints'
 import api from './api'
 import getRandomInt from '../utils/getRandomInt'
 
@@ -10,7 +11,7 @@ searchService.get = function(playlistNameLastCh) {
     limit: 50,
     offset: getRandomInt(),
   }
-  return api.get('/v1/search', { params: query })
+  return api.get(`${apiEndpoints.search}`, { params: query })
 }
 
 export default searchService

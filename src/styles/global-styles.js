@@ -2,7 +2,6 @@ import { injectGlobal } from 'styled-components'
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
-
   @import url('https://fonts.googleapis.com/css?family=Montserrat:200,400,500');
 
   html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a,

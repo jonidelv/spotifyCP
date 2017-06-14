@@ -4,7 +4,7 @@ import pure from 'recompose/pure'
 import styled, { css }  from 'styled-components'
 import bg from '../assets/bg.png'
 import logo from '../assets/logo.png'
-import theme from '../constants/theme'
+import theme from '../utils/theme'
 
 function LoginView({ onPressLoginBtn, errorDescription }) {
   return (

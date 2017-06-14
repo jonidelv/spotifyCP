@@ -3,11 +3,10 @@ import {
   CLEAR_INPUT_VALUE,
   CHANGE_PLAYLIST_NAME,
   ERROR_FETCHING,
-  CLEAR_ERROR_FETCHING,
-  LOADING_TRACKS,
-  TRACKS_LOADED,
   PUSH_NEW_TRACK,
   GENERATING_PLAYLIST,
+  TRACKS_BEING_FETCHED,
+  IS_DELETING,
 } from '../constants/actionTypes'
 
 const initialState = {
@@ -18,6 +17,7 @@ const initialState = {
   generatingPlaylist: false,
   errorFetchingDescription: '',
   tracks: [],
+  deleting: false,
 }
 
 export default function create(state = initialState, action) {
@@ -35,6 +35,7 @@ export default function create(state = initialState, action) {
         inputValue: '',
         playlistName: '',
         tracks: [],
+        fetchingTracks: false,
       }
 
     case CHANGE_PLAYLIST_NAME:
@@ -49,22 +50,10 @@ export default function create(state = initialState, action) {
         errorFetchingDescription: action.payload,
       }
 
-    case CLEAR_ERROR_FETCHING:
+    case TRACKS_BEING_FETCHED:
       return {
         ...state,
-        errorFetchingDescription: '',
-      }
-
-    case LOADING_TRACKS:
-      return {
-        ...state,
-        fetchingTracks: true,
-      }
-
-    case TRACKS_LOADED:
-      return {
-        ...state,
-        fetchingTracks: false,
+        fetchingTracks: action.payload,
       }
 
     case PUSH_NEW_TRACK:
@@ -77,6 +66,12 @@ export default function create(state = initialState, action) {
       return {
         ...state,
         generatingPlaylist: action.payload,
+      }
+
+    case IS_DELETING:
+      return {
+        ...state,
+        deleting: action.payload,
       }
 
     default:

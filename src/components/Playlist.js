@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import pure from 'recompose/pure'
 import styled  from 'styled-components'
 import { PlaylistItem } from '../components'
 
@@ -27,7 +28,7 @@ Playlist.propTypes = {
   tracks: PropTypes.array.isRequired,
 }
 
-export default Playlist
+export default pure(Playlist)
 
 //styled-components
 const Wrapper = styled.ol`

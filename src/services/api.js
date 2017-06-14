@@ -1,5 +1,6 @@
 import trae from 'trae'
 import lscache from 'lscache'
+import apiEndpoints from '../constants/apiEndpoints'
 
 function errorMessage (err) {
   switch (err.status) {
@@ -42,7 +43,7 @@ function identity (res) {
 }
 
 const api = trae.create({
-  baseUrl: 'https://api.spotify.com',
+  baseUrl: apiEndpoints.base,
 })
 
 api.before(tokenize)

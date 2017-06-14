@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled  from 'styled-components'
-import theme from '../constants/theme'
+import theme from '../utils/theme'
 import millisToMinutes from '../utils/millisToMinutes'
 
 function PlaylistItem({ title, artist, album, duration, order, link }) {

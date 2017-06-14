@@ -36,7 +36,6 @@ class Callback extends React.Component {
     return hash.substr(hash.indexOf(`${hashName}=`)).split('&')[0].split('=')[1]
   }
 
-
   render() {
     return (
       <DarkBackground />

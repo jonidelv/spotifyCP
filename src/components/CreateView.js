@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import pure from 'recompose/pure'
 import styled  from 'styled-components'
-import theme from '../constants/theme'
+import theme from '../utils/theme'
 import { Playlist, Spinner } from '../components'
 
 function CreateView({
@@ -19,8 +20,8 @@ function CreateView({
   return (
     <Wrapper>
       <InputBox>
-        <Label for='name'>Write the playlist title here</Label>
-        {  inputValue.length > 1 && !fetchingTracks &&
+        <Label for='name'>Write the playlist name here</Label>
+        {  inputValue.length > 0 &&
           <ClearInput onClick={clearInputValue}>X</ClearInput>
         }
         <Input
@@ -41,9 +42,7 @@ function CreateView({
         }
         <div>
           <PlaylistName>{playlistName}</PlaylistName>
-          { fetchingTracks &&
-            <Spinner loading height={30} />
-          }
+          <Spinner loading={fetchingTracks} height={30} />
         </div>
         <Playlist tracks={tracks} />
         <div>
@@ -75,7 +74,7 @@ CreateView.propTypes = {
   errorFetchingDescription: PropTypes.string.isRequired,
 }
 
-export default CreateView
+export default pure(CreateView)
 
 //styled-components
 const Wrapper = styled.div`

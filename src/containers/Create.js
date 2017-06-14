@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { CreateView } from '../components'
+import { createStructuredSelector, createSelector } from 'reselect'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -8,19 +9,13 @@ import * as CreateActions from '../actions/create'
 
 class Create extends React.Component {
 
-  constructor () {
-    super()
-    this.state = {
-      isDeleting: false,
-    }
-  }
-
   static propTypes = {
     changeInputValue: PropTypes.func.isRequired,
     clearInputValue: PropTypes.func.isRequired,
     fetchTracks: PropTypes.func.isRequired,
     generatePlaylist: PropTypes.func.isRequired,
-    tracksLoaded: PropTypes.func.isRequired,
+    tracksBeingFetched: PropTypes.func.isRequired,
+    isDeleting: PropTypes.func.isRequired,
     loggedIn: PropTypes.bool.isRequired,
     inputValue: PropTypes.string.isRequired,
     playlistName: PropTypes.string.isRequired,
@@ -28,6 +23,7 @@ class Create extends React.Component {
     tracks: PropTypes.array.isRequired,
     generatingPlaylist: PropTypes.bool.isRequired,
     errorFetchingDescription: PropTypes.string.isRequired,
+    deleting: PropTypes.bool.isRequired,
   }
 
   componentWillMount() {
@@ -41,29 +37,26 @@ class Create extends React.Component {
   renderTask = () => {
     if (!this.props.loggedIn ) this.props.history.push('/')
     if (this.isFetchingTracks()) {
-      this.props.tracksLoaded()
+      this.props.tracksBeingFetched(false)
     }
   }
 
   isFetchingTracks = () => {
-    return (this.props.playlistName.replace(/ /g, '').length - 1) === this.props.tracks.length
+    let playlistNameLgth = this.props.playlistName.replace(/ /g, '').length - 1
+    return playlistNameLgth === this.props.tracks.length
   }
 
   isKeyDownDelete = (e) => {
     if (e.keyCode === 8) {
-      this.setState({
-        isDeleting: true,
-      })
+      this.props.isDeleting(true)
+      this.props.tracksBeingFetched(false)
     } else {
-      this.setState({
-        isDeleting: false,
-      })
+      this.props.isDeleting(false)
     }
   }
 
   onInputChange = (e) => {
-    let isDeleting = this.state.isDeleting
-    if (isDeleting) {
+    if (this.props.deleting) {
       return this.clearInputValue()
     }
     let value = e.target.value
@@ -79,7 +72,6 @@ class Create extends React.Component {
 
   onGeneratePlaylist = () => {
     this.props.generatePlaylist()
-
   }
 
   render() {
@@ -100,18 +92,41 @@ class Create extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    loggedIn: state.login.loggedIn,
-    inputValue: state.create.inputValue,
-    playlistName: state.create.playlistName,
-    fetchingTracks: state.create.fetchingTracks,
-    tracks: state.create.tracks,
-    generatingPlaylist: state.create.generatingPlaylist,
-    errorFetchingDescription: state.create.errorFetchingDescription,
-    deleting: state.create.deleting,
-  }
-}
+//Selectors
+const mapStateToProps = createStructuredSelector({
+  loggedIn: createSelector(
+    (state) => state.login.loggedIn,
+    (loginState) => loginState
+  ),
+  inputValue: createSelector(
+    (state) => state.create.inputValue,
+    (createState) => createState
+  ),
+  playlistName: createSelector(
+    (state) => state.create.playlistName,
+    (createState) => createState
+  ),
+  fetchingTracks: createSelector(
+    (state) => state.create.fetchingTracks,
+    (createState) => createState
+  ),
+  tracks: createSelector(
+    (state) => state.create.tracks,
+    (createState) => createState
+  ),
+  generatingPlaylist: createSelector(
+    (state) => state.create.generatingPlaylist,
+    (createState) => createState
+  ),
+  errorFetchingDescription: createSelector(
+    (state) => state.create.errorFetchingDescription,
+    (createState) => createState
+  ),
+  deleting: createSelector(
+    (state) => state.create.deleting,
+    (createState) => createState
+  ),
+})
 
 function mapDispatchToProps (dispatch) {
   let actions = bindActionCreators(CreateActions, dispatch)
@@ -120,7 +135,8 @@ function mapDispatchToProps (dispatch) {
     clearInputValue: actions.clearInputValue,
     fetchTracks: actions.fetchTracks,
     generatePlaylist: actions.generatePlaylist,
-    tracksLoaded: actions.tracksLoaded,
+    tracksBeingFetched: actions.tracksBeingFetched,
+    isDeleting: actions.isDeleting,
   }
 }
 

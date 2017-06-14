@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import lscache from 'lscache'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import colors from '../constants/colors'
@@ -9,7 +10,6 @@ import {
   Callback,
   Create,
 } from '../containers'
-import lscache from 'lscache'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'

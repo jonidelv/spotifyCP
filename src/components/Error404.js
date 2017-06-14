@@ -1,7 +1,7 @@
 import React from 'react'
 import pure from 'recompose/pure'
 import styled  from 'styled-components'
-import theme from '../constants/theme'
+import theme from '../utils/theme'
 import errorBg from '../assets/error-bg.jpg'
 
 function Error404() {

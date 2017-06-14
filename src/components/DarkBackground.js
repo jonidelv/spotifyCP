@@ -1,7 +1,7 @@
 import React from 'react'
 import pure from 'recompose/pure'
 import styled  from 'styled-components'
-import theme from '../constants/theme'
+import theme from '../utils/theme'
 
 function DarkBackground() {
   return (
