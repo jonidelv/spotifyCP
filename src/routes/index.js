@@ -41,7 +41,9 @@ class Routes extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router
+        basename={process.env.NODE_ENV === 'development' ? '' : 'spotifyCP'}
+      >
         <ThemeProvider theme={colors}>
         <div>
           <Switch>
