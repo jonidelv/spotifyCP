@@ -1,4 +1,4 @@
 export default {
   dev: 'http://localhost:3000',
-  prod: 'https://spotifycrazyplaylist.xyz/',
+  prod: 'https://delvallejonatan.github.io/spotifyCP',
 }
