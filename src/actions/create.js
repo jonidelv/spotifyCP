@@ -69,7 +69,7 @@ export function fetchTracks(playlistName, idx, isDeleting) {
             uri: track.uri,
           }
           let matchOrder = playlistName[newTrack.order] === playlistNameLastCh
-          if (playlistName && playlistName[newTrack.order] && matchOrder) {
+          if (playlistName && matchOrder) {
             dispatch(pushNewTrack(newTrack))
           }
           dispatch(errorFetching(''))
