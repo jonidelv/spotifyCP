@@ -57,17 +57,20 @@ export function fetchTracks(playlistName, idx, isDeleting) {
       dispatch(tracksBeingFetched(true))
       _getSeacrchService(playlistNameLastCh, dispatch)
         .then((track) => {
-          if (getState().create.playlistName) {
-            dispatch(pushNewTrack({
-              title: track.name,
-              artist: track.artists[0].name,
-              album: track.album.name,
-              duration: track.duration_ms,
-              id: track.id,
-              order: idx,
-              link: track.external_urls.spotify,
-              uri: track.uri,
-            }))
+          let playlistName = getState().create.playlistName
+          let newTrack = {
+            title: track.name,
+            artist: track.artists[0].name,
+            album: track.album.name,
+            duration: track.duration_ms,
+            id: track.id,
+            order: idx,
+            link: track.external_urls.spotify,
+            uri: track.uri,
+          }
+          let matchOrder = playlistName[newTrack.order] === playlistNameLastCh
+          if (playlistName && playlistName[newTrack.order] && matchOrder) {
+            dispatch(pushNewTrack(newTrack))
           }
           dispatch(errorFetching(''))
         })
