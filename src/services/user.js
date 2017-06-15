@@ -4,7 +4,7 @@ import api from './api'
 const userService = {}
 
 userService.get = function() {
-  return api.get(`${apiEndpoints.me}`)
+  return api.get(apiEndpoints.me)
     .then((response) => response.data)
 }
 

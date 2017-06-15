@@ -26,7 +26,7 @@ function CreateView({
         }
         <Input
           id='name'
-          placeholder='Write here...'
+          placeholder='Start typing...'
           value={inputValue}
           onChange={(value) => onInputChange(value)}
           onKeyDown={(value) => isKeyDownDelete(value)}

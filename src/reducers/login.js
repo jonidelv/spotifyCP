@@ -30,7 +30,6 @@ export default function login(state = initialState, action) {
         ...state,
         loggedIn: false,
         errorDescription: '',
-        userId: '',
       }
 
     default:
