@@ -36,6 +36,7 @@ export default function create(state = initialState, action) {
         playlistName: '',
         tracks: [],
         fetchingTracks: false,
+        errorFetchingDescription:'',
       }
 
     case CHANGE_PLAYLIST_NAME:
