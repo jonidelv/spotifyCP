@@ -10,7 +10,7 @@ exports[`test <Spinner /> component it renders if loading is true 1`] = `
 />
 `;
 
-exports[`test <Spinner /> component it set the height to 50 1`] = `
+exports[`test <Spinner /> component it set the height and width to 50 1`] = `
 <img
   alt="Loading Spinner"
   class="sc-bdVaJa hbGCZo"
@@ -19,3 +19,5 @@ exports[`test <Spinner /> component it set the height to 50 1`] = `
   width="50"
 />
 `;
+
+exports[`test <Spinner /> component not renders if loading is true 1`] = `null`;
