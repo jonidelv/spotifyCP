@@ -58,6 +58,7 @@ export function fetchTracks(playlistName, idx) {
       _getSeacrchService(playlistNameLastCh, dispatch)
         .then((track) => {
           let playlistName = getState().create.playlistName
+          let tracks = getState().create.tracks
           let newTrack = {
             title: track.name,
             artist: track.artists[0].name,
@@ -69,7 +70,8 @@ export function fetchTracks(playlistName, idx) {
             uri: track.uri,
           }
           let matchOrder = playlistName[newTrack.order] === playlistNameLastCh
-          if (playlistName && matchOrder) {
+          let exitPushNewTrack = tracks.length >= playlistName.length
+          if (playlistName && !exitPushNewTrack && matchOrder) {
             dispatch(pushNewTrack(newTrack))
           }
           dispatch(errorFetching(''))
