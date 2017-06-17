@@ -45,14 +45,12 @@ class Routes extends React.Component {
         basename={process.env.NODE_ENV === 'development' ? '' : 'spotifyCP'}
       >
         <ThemeProvider theme={colors}>
-        <div>
           <Switch>
             <Route path="/" component={Login} exact />
             <Route path="/callback" component={Callback} exact />
             <Route path="/create" component={Create} exact />
             <Route component={Error404} />
           </Switch>
-        </div>
         </ThemeProvider>
       </Router>
     )

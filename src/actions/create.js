@@ -49,7 +49,7 @@ export function generatePlaylist() {
   }
 }
 
-export function fetchTracks(playlistName, idx, isDeleting) {
+export function fetchTracks(playlistName, idx) {
   return (dispatch, getState) => {
     dispatch(changePlaylistName(playlistName))
     let playlistNameLastCh = playlistName.substr(-1)
