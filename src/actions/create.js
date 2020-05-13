@@ -12,7 +12,7 @@ import { createAction } from 'redux-actions'
 import userService from '../services/user'
 import playlistService from '../services/playlist'
 import searchService from '../services/search'
-import sites from '../constants/sites'
+import { siteName } from '../constants'
 
 export const changeInputValue = createAction(CHANGE_INPUT_VALUE)
 export const clearInputValue = createAction(CLEAR_INPUT_VALUE)
@@ -23,9 +23,8 @@ export const generatingPlaylist = createAction(GENERATING_PLAYLIST)
 export const tracksBeingFetched = createAction(TRACKS_BEING_FETCHED)
 export const isDeleting = createAction(IS_DELETING)
 
-export function generatePlaylist() {
+export function generatePlaylist(uris, playlistName) {
   return (dispatch, getState) => {
-    let tracks = getState().create.tracks
     let userId = ''
     let playlistUri = ''
     dispatch(generatingPlaylist(true))
@@ -33,45 +32,54 @@ export function generatePlaylist() {
       .then((user) => {
         userId = user.id
         return playlistService.create(userId, {
-        name: getState().create.playlistName,
-        description: `Playlist generated with ${sites.prod}`,
+        name: playlistName,
+        description: `Generated with ${siteName}`,
       })})
       .then((playlist) => {
         playlistUri = playlist.external_urls.spotify
         return playlistService.addTracks(userId, playlist.id, {
-        uris: tracks.sort((a, b) => (a.order - b.order)).map((track) => track.uri),
+        uris,
       })})
-      .then(() => window.location.replace(playlistUri))
+      .then(() => {
+        window.open(playlistUri)
+        dispatch(clearInputValue())
+      })
       .catch((err) => {
-        dispatch(generatingPlaylist(false))
+        console.log('err', err)
         dispatch(errorFetching(`${err} try again later`))
       })
+      .finally(() => {
+        dispatch(generatingPlaylist(false))
+     })
   }
 }
 
 export function fetchTracks(playlistName, idx) {
   return (dispatch, getState) => {
     dispatch(changePlaylistName(playlistName))
-    let playlistNameLastCh = playlistName.substr(-1)
+    const order = idx
+    const playlistNameLastCh = playlistName.substr(-1)
     if (playlistNameLastCh && playlistNameLastCh !== ' ') {
       dispatch(tracksBeingFetched(true))
-      _getSeacrchService(playlistNameLastCh, dispatch)
+      getSearchService(playlistNameLastCh, dispatch)
         .then((track) => {
-          let playlistName = getState().create.playlistName
-          let tracks = getState().create.tracks
           let newTrack = {
             title: track.name,
             artist: track.artists[0].name,
             album: track.album.name,
             duration: track.duration_ms,
             id: track.id,
-            order: idx,
+            order,
             link: track.external_urls.spotify,
             uri: track.uri,
           }
-          let matchOrder = playlistName[newTrack.order] === playlistNameLastCh
-          let exitPushNewTrack = tracks.length >= playlistName.length
-          if (playlistName && !exitPushNewTrack && matchOrder) {
+          const state = getState()
+          const playlistName = state.create.playlistName
+          const tracks = state.create.tracks
+          const matchOrder = playlistName[newTrack.order] === playlistNameLastCh
+          const exitPushNewTrack = tracks.length >= playlistName.length
+
+          if (playlistName && matchOrder && !exitPushNewTrack) {
             dispatch(pushNewTrack(newTrack))
           }
           dispatch(errorFetching(''))
@@ -83,10 +91,16 @@ export function fetchTracks(playlistName, idx) {
   }
 }
 
-async function _getSeacrchService(playlistNameLastCh) {
+async function getSearchService(playlistNameLastCh) {
+  let track
   do {
-    let response =  await searchService.get(playlistNameLastCh)
-    var track = response.data.tracks.items.find((track) => track.name[0] === playlistNameLastCh.toUpperCase())
+    try {
+      let response =  await searchService.get(playlistNameLastCh)
+      track = response.tracks.items.find((track) => track.name[0] === playlistNameLastCh.toUpperCase())
+    } catch (error) {
+      console.log('error fetching track', error)
+    }
   } while(!track)
+
   return track
 }

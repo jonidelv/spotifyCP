@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import pure from 'recompose/pure'
 import ring from '../assets/ring.svg'
-import styled  from 'styled-components'
+import styled from '@emotion/styled'
 
-function Spinner({ loading, height }) {
+const Spinner = ({ loading, height }) => {
   return !loading ? null :
     <Ring
       src={ring}
@@ -19,7 +18,7 @@ Spinner.propTypes = {
   height: PropTypes.number,
 }
 
-export default pure(Spinner)
+export default React.memo(Spinner)
 
 const Ring = styled.img`
   display: inline-block;

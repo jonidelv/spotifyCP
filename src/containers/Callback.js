@@ -3,55 +3,67 @@ import PropTypes from 'prop-types'
 import { DarkBackground } from '../components'
 import queryString  from 'query-string'
 import lscache from 'lscache'
+import { tokenType, storageKey } from '../constants'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as LoginActions from '../actions/login'
+import * as CreateActions from '../actions/create'
 
-class Callback extends React.Component {
+const parseHash = (hashName, location) => {
+  const hash = location.hash.substr(1)
+  return hash.substr(hash.indexOf(`${hashName}=`)).split('&')[0].split('=')[1]
+}
 
-  static propTypes = {
-    saveErrorDescription: PropTypes.func.isRequired,
-    makeLogin: PropTypes.func.isRequired,
-  }
-
-  componentWillMount() {
-    if (this.props.location.hash) {
-      let tkn = this.parseHash('access_token')
-      let exp = this.parseHash('expires_in') / 60
-      lscache.set('spotifyCPTkn', tkn, exp)
-      this.props.makeLogin()
-      this.props.history.push('/create')
-    } else {
-      let query = queryString.parse(this.props.location.search)
-      let description = query.error ?
-        query.error : 'Something unexpected happens try again'
-      this.props.saveErrorDescription(description)
-      this.props.history.push('/')
+const parseUrl = (props) => () => {
+  if (props.location.hash) {
+    const token = parseHash('access_token', props.location)
+    const exp = parseHash('expires_in', props.location) / 60
+    const state = parseHash('state', props.location)
+    const tracksWithPlaylist = state.split('.')
+    const playlistName = tracksWithPlaylist.splice(-1,1)[0]
+    const tracksUris = tracksWithPlaylist.map(uri => `spotify:track:${uri}`)
+    const payload = {
+      token,
+      type: tokenType.implicitGrantFlow,
     }
-  }
-
-  parseHash = (hashName) => {
-    var hash = this.props.location.hash.substr(1)
-    return hash.substr(hash.indexOf(`${hashName}=`)).split('&')[0].split('=')[1]
-  }
-
-  render() {
-    return (
-      <DarkBackground />
-    )
+    lscache.set(storageKey, payload, exp)
+    props.generatePlaylist(tracksUris, playlistName)
+    props.history.push('/create')
+  } else {
+    const query = queryString.parse(props.location.search)
+    const description = query.error ?
+      query.error : 'Something unexpected happens try again'
+    props.saveErrorDescription(description)
+    props.history.push('/')
   }
 }
 
+const Callback = (props) => {
+  React.useMemo(parseUrl(props), [])
+
+  return (
+    <DarkBackground />
+  )
+}
+
+Callback.propTypes = {
+  saveErrorDescription: PropTypes.func.isRequired,
+  makeLogin: PropTypes.func.isRequired,
+}
+
 function mapDispatchToProps (dispatch) {
-  let actions = bindActionCreators(LoginActions, dispatch)
+  const loginActions = bindActionCreators(LoginActions, dispatch)
+  const createActions = bindActionCreators(CreateActions, dispatch)
   return {
-    saveErrorDescription: actions.saveErrorDescription,
-    makeLogin: actions.makeLogin,
+    saveErrorDescription: loginActions.saveErrorDescription,
+    makeLogin: loginActions.makeLogin,
+    generatePlaylist: createActions.generatePlaylist,
+
   }
 }
 
 export default connect(
   null,
   mapDispatchToProps,
-)(Callback)
+)(React.memo(Callback))

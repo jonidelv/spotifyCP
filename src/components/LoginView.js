@@ -1,20 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import pure from "recompose/pure";
-import styled, { css } from "styled-components";
-import bg from "../assets/error-bg.jpg";
-import logo from "../assets/logo.png";
-import theme from "../utils/theme";
+import React from "react"
+import PropTypes from "prop-types"
+import { css } from '@emotion/core'
+import styled from '@emotion/styled'
+import bg from "../assets/error-bg.jpg"
+import logo from "../assets/logo.png"
+import { palette } from '../constants'
 
-function LoginView({ onPressLoginBtn, errorDescription }) {
+const LoginView = ({ onPressLoginBtn, errorDescription }) => {
   return (
     <Wrapper>
       <Overlay>
         <Container>
           <Form>
             <Logo />
-            <LoginText>Login using your Spotify credentials</LoginText>
-            <LoginBtn onClick={onPressLoginBtn}>Login</LoginBtn>
+            <LoginText>Create your own playlist</LoginText>
+            <LoginBtn onClick={onPressLoginBtn}>Start</LoginBtn>
             {errorDescription && <ErrorText>{errorDescription}</ErrorText>}
           </Form>
           <Slogan>
@@ -27,19 +27,19 @@ function LoginView({ onPressLoginBtn, errorDescription }) {
         </Container>
       </Overlay>
     </Wrapper>
-  );
+  )
 }
 
 LoginView.propTypes = {
   onPressLoginBtn: PropTypes.func.isRequired,
   errorDescription: PropTypes.string.isRequired,
-};
+}
 
-export default pure(LoginView);
+export default React.memo(LoginView)
 
 //styled-components
 const Wrapper = styled.div`
-  background: ${theme.background};
+  background: ${palette.background};
   position: fixed;
   top: 0;
   bottom: 0;
@@ -55,7 +55,7 @@ const Wrapper = styled.div`
   @media (max-width: 800px) {
     background-size: cover;
   }
-`;
+`
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -73,7 +73,7 @@ const Overlay = styled.div`
   @media (max-width: 768px) {
     overflow: scroll;
   }
-`;
+`
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -84,16 +84,16 @@ const Container = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`;
+`
 
 const Share = css`
-  color: ${theme.white};
+  color: ${palette.white};
   align-self: center;
   width: 35%;
   @media (max-width: 768px) {
     width: 90%;
   }
-`;
+`
 const Form = styled.div`
   ${Share};
   padding-right: 20px;
@@ -108,12 +108,12 @@ const Form = styled.div`
   @media (max-width: 400px) {
     padding: 60px 50px 20px 50px;
   }
-`;
+`
 
 const Slogan = styled.div`
   ${Share};
   text-align: left;
-  border-left: 1px solid ${theme.white};
+  border-left: 1px solid ${palette.white};
   padding: 60px 0 60px 50px;
   cursor: default;
   flex: 2;
@@ -127,10 +127,10 @@ const Slogan = styled.div`
   @media (max-width: 500px) {
     padding: 20px 50px 40px 50px;
   }
-`;
+`
 
 const Title = styled.h1`
-  color: ${theme.primary};
+  color: ${palette.primary};
   font-size: 50px;
   font-weight: 500;
   margin-bottom: 35px;
@@ -143,7 +143,7 @@ const Title = styled.h1`
     font-size: 28px;
     line-height: 35px;
   }
-`;
+`
 
 const Subtitle = styled.h2`
   font-size: 28px;
@@ -159,7 +159,7 @@ const Subtitle = styled.h2`
     font-size: 14px;
     line-height: 25px;
   }
-`;
+`
 
 const Logo = styled.div`
   background-image: url(${logo});
@@ -168,7 +168,7 @@ const Logo = styled.div`
   background-position: center;
   height: 70px;
   margin-bottom: 30px;
-`;
+`
 
 const LoginText = styled.p`
   font-size: 16px;
@@ -177,7 +177,7 @@ const LoginText = styled.p`
   @media (max-width: 400px) {
     line-height: 25px;
   }
-`;
+`
 
 const LoginBtn = styled.button`
   background-color: transparent;
@@ -186,24 +186,24 @@ const LoginBtn = styled.button`
   height: 40px;
   border-radius: 20px;
   outline: 0;
-  border: 2px solid ${theme.white};
-  color: ${theme.white};
+  border: 2px solid ${palette.white};
+  color: ${palette.white};
   font-size: 13px;
   text-transform: uppercase;
   cursor: pointer;
   margin-top: 10px;
   transition: all 0.4s ease;
   &:hover {
-    border-color: ${theme.primary};
-    color: ${theme.white};
-    background-color: ${theme.primary};
+    border-color: ${palette.primary};
+    color: ${palette.white};
+    background-color: ${palette.primary};
   }
-`;
+`
 
 const ErrorText = styled.p`
   margin-top: 25px;
   display: block;
   font-size: 15px;
   text-align: center;
-  color: ${theme.errorCode};
-`;
+  color: ${palette.errorCode};
+`

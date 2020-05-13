@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import pure from 'recompose/pure'
-import styled  from 'styled-components'
+import styled from '@emotion/styled'
 import { PlaylistItem } from '../components'
 
-function Playlist({ tracks }) {
+const Playlist = ({ tracks })  => {
   return (
     <Wrapper>
       {
@@ -28,7 +27,7 @@ Playlist.propTypes = {
   tracks: PropTypes.array.isRequired,
 }
 
-export default pure(Playlist)
+export default React.memo(Playlist)
 
 //styled-components
 const Wrapper = styled.ol`

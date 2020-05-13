@@ -1,19 +1,18 @@
 import React from 'react'
-import pure from 'recompose/pure'
-import styled  from 'styled-components'
-import theme from '../utils/theme'
+import styled from '@emotion/styled'
+import { palette } from '../constants'
 
-function DarkBackground() {
+const DarkBackground = () => {
   return (
     <Wrapper />
   )
 }
 
-export default pure(DarkBackground)
+export default React.memo(DarkBackground)
 
 //styled-components
 const Wrapper = styled.div`
-  background: ${theme.background};
+  background: ${palette.background};
   position: fixed;
   top: 0;
   bottom: 0;

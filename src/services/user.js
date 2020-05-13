@@ -1,11 +1,10 @@
-import apiEndpoints from '../constants/apiEndpoints'
+import { apiEndpoints } from '../constants'
 import api from './api'
 
 const userService = {}
 
-userService.get = function() {
-  return api.get(apiEndpoints.me)
-    .then((response) => response.data)
-}
+userService.get = () => (
+  api.get(apiEndpoints.me)
+)
 
 export default userService

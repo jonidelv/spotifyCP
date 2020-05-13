@@ -1,42 +1,57 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { LoginView } from '../components'
-import sites from '../constants/sites'
+import lscache from 'lscache'
 import { connect } from 'react-redux'
+import axios from 'axios'
+import { tokenType, storageKey, apiEndpoints } from '../constants'
 
-class Login extends React.Component {
+const transitionLogin = (props) => () => {
+  const clientId = process.env.REACT_APP_CLIENT_ID
+  const clientSecret = process.env.REACT_APP_CLIENT_SECRET
+  const urlencoded = new URLSearchParams()
+  urlencoded.append("grant_type", "client_credentials")
 
-  static propTypes = {
-    errorDescription: PropTypes.string.isRequired,
-    loggedIn: PropTypes.bool.isRequired,
+  const authOptions = {
+    method: 'post',
+    url: apiEndpoints.token,
+    headers: {
+      'Content-type': 'application/x-www-form-urlencoded',
+    },
+    auth: {
+      username: clientId,
+      password: clientSecret,
+    },
+    data: urlencoded,
   }
 
-  componentWillMount() {
-    if (this.props.loggedIn) {
-      this.props.history.push('/create')
-    }
-  }
+  axios(authOptions)
+    .then((response) => {
+      let exp = response.data.expires_in / 60
+      const payload = {
+        token: response.data.access_token,
+        type: tokenType.clientCredentialsFlow,
+      }
+      lscache.set(storageKey, payload, exp)
+      props.dispatch({ type: 'MAKE_LOGIN' })
+      props.history.push('/create')
+    })
+    .catch((err) => {
+      console.log('err', err)
+    })
+}
 
-  transitionLogin = () => {
-    let callback = process.env.NODE_ENV === 'development' ?
-      `${sites.dev}/callback` : `${sites.prod}/callback`
-    let redirect = encodeURIComponent(callback)
-    let base = 'https://accounts.spotify.com/'
-    let client = '2b4ed4588a8040098b2b70149e79c948'
-    let scope = 'user-read-private user-library-read user-top-read playlist-modify-public'
-    let scopeUri = encodeURIComponent(scope)
-    let url = `${base}authorize?client_id=${client}&redirect_uri=${redirect}&scope=${scopeUri}&response_type=token`
-    window.location.replace(url)
-  }
+const Login = (props) => {
+  React.memo(() => {
+    if (props.loggedIn) props.history.push('/create')
+  }, [])
 
-  render() {
-    return (
-      <LoginView
-        onPressLoginBtn={this.transitionLogin}
-        errorDescription={this.props.errorDescription}
-      />
-    )
-  }
+  return (
+    <LoginView
+      onPressLoginBtn={transitionLogin(props)}
+      errorDescription={props.errorDescription}
+    />
+  )
 }
 
 function mapStateToProps (state) {
@@ -46,7 +61,11 @@ function mapStateToProps (state) {
   }
 }
 
+Login.propTypes = {
+  errorDescription: PropTypes.string.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+}
+
 export default connect(
   mapStateToProps,
-  null,
-)(Login)
+)(React.memo(Login))

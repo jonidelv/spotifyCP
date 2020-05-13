@@ -1,16 +1,14 @@
-import apiEndpoints from '../constants/apiEndpoints'
+import { apiEndpoints } from '../constants'
 import api from './api'
 
 const playlistService = {}
 
-playlistService.create = function(userId, playlist) {
-  return api.post(`${apiEndpoints.user}/${userId}/playlists`, playlist)
-    .then((response) => response.data)
-}
+playlistService.create = (userId, playlist) => (
+  api.post(`${apiEndpoints.user}/${userId}/playlists`, playlist)
+)
 
-playlistService.addTracks = function(userId, playlistId, tracks) {
-  return api.post(`${apiEndpoints.user}/${userId}/playlists/${playlistId}/tracks`, tracks)
-    .then((response) => response.data)
-}
+playlistService.addTracks = (userId, playlistId, tracks) => (
+  api.post(`${apiEndpoints.user}/${userId}/playlists/${playlistId}/tracks`, tracks)
+)
 
 export default playlistService

@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled  from 'styled-components'
-import theme from '../utils/theme'
+import styled from '@emotion/styled'
+import { palette } from '../constants'
 import millisToMinutes from '../utils/millisToMinutes'
 
-function PlaylistItem({ title, artist, album, duration, order, link }) {
+const PlaylistItem = ({ title, artist, album, duration, order, link }) => {
   return (
     <Track>
       <NameContainer>
@@ -33,13 +33,13 @@ PlaylistItem.propTypes = {
   link: PropTypes.string.isRequired,
 }
 
-export default PlaylistItem
+export default React.memo(PlaylistItem)
 
 //styled-components
 const Track = styled.li`
   display: flex;
   justify-content: space-between;
-  color: ${theme.white};
+  color: ${palette.white};
   margin-bottom: 35px;
   cursor: default;
 `
@@ -54,25 +54,25 @@ const Order = styled.div`
   font-size: 17px;
   margin-right: 20px;
   margin-top: 2px;
-  color: ${theme.greyText};
+  color: ${palette.greyText};
   font-weight: 300;
   width: 22px;
 `
 
 const Title = styled.div`
   font-size: 18px;
-  color: ${theme.white};
+  color: ${palette.white};
   font-weight: 300;
   text-transform: capitalize;
   padding-right: 15px;
   &:hover {
-    color: ${theme.primary};
+    color: ${palette.primary};
   }
 `
 
 const Description = styled.div`
   font-size: 15px;
-  color: ${theme.greyText};
+  color: ${palette.greyText};
   font-weight: 300;
   text-transform: capitalize;
   margin-top: 5px;
@@ -85,14 +85,14 @@ const Link = styled.a`
 
 const Duration = styled.div`
   font-size: 16px;
-  color: ${theme.greyText};
+  color: ${palette.greyText};
   font-weight: 300;
   margin-top: 2px;
   width: 55px;
 `
 
 const Strong = styled.span`
-  color: ${theme.primary};
+  color: ${palette.primary};
   font-size: 20px;
   font-weight: 400;
 `

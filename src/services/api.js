@@ -1,52 +1,51 @@
-import trae from 'trae'
+import axios from 'axios'
 import lscache from 'lscache'
-import apiEndpoints from '../constants/apiEndpoints'
+import { apiEndpoints } from '../constants'
+import { storageKey } from '../constants'
 
-function errorMessage (err) {
-  switch (err.status) {
-    case 400:
-      return err.message || 'Error 400: Bad Request'
-    case 401:
-      lscache.flush()
-      window.location.href = '/'
-      return err.message
-    case 403:
-      return 'Forbidden - The server understood the request, but is refusing to fulfill it.'
-    case 404:
-      return 'Not Found - The requested resource could not be found. This error can be due to a temporary or permanent condition.'
-    case 429:
-      return 'Rate Limited'
-    case 500: break
-    case 502: break
-    case 503:
-      return `API Server Error ${err.status}`
-    default:
-      return `API Request Error ${err.status}`
+function errorMessage(err = {}) {
+  if (err.status === 401) {
+    lscache.flush()
+    window.location.href = '/'
+    return err.message
   }
-  return 'Unknown Error'
+
+  return err.message
 }
 
-function tokenize (config) {
-  const token = lscache.get('spotifyCPTkn')
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-}
-
-function throwError (err) {
-  throw errorMessage(err)
-}
-
-function identity (res) {
-  return res
-}
-
-const api = trae.create({
-  baseUrl: apiEndpoints.base,
+const api = axios.create({
+  baseURL: apiEndpoints.base,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
 })
 
-api.before(tokenize)
-api.after(identity, throwError)
+api.interceptors.request.use(
+  (config) => {
+    // Do something before request is sent
+    const data = lscache.get(storageKey)
+    const token = data && data.token
+    if (token) {
+      // eslint-disable-next-line no-param-reassign
+      config.headers.common.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) =>
+    // Do something with request error
+    Promise.reject(error),
+)
+
+// Add a response interceptor
+api.interceptors.response.use(
+  (response) => (
+    // Do something with response data
+    response.data
+),
+  (error) =>
+    // Do something with response error
+    Promise.reject(errorMessage(error)),
+)
 
 export default api

@@ -1,6 +1,6 @@
 import fetchMock from 'fetch-mock'
 import userService from '../../services/user'
-import apiEndpoints from '../../constants/apiEndpoints'
+import { apiEndpoints } from '../../constants'
 
 describe('userService get', () => {
 

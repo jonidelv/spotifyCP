@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import pure from 'recompose/pure'
-import styled  from 'styled-components'
-import theme from '../utils/theme'
+import styled from '@emotion/styled'
+import { palette } from '../constants'
 import { Playlist, Spinner } from '../components'
 
-function CreateView({
+const CreateView = ({
   inputValue,
   onInputChange,
   clearInputValue,
@@ -16,7 +15,7 @@ function CreateView({
   errorFetchingDescription,
   onGeneratePlaylist,
   isKeyDownDelete,
-}) {
+}) => {
   return (
     <Wrapper>
       <InputBox>
@@ -31,6 +30,7 @@ function CreateView({
           onChange={(value) => onInputChange(value)}
           onKeyDown={(value) => isKeyDownDelete(value)}
           disabled={generatingPlaylist}
+          autoComplete="off"
         />
         { /[^a-z ]/i.test(inputValue) &&
           <ErrorText>Just letter (A-Z) is supported</ErrorText>
@@ -51,7 +51,7 @@ function CreateView({
               onClick={onGeneratePlaylist}
               disabled={generatingPlaylist}
             >
-              Generate
+              Create Playlist
             </GenerateBtn>
           }
           <Spinner loading={generatingPlaylist} height={35} />
@@ -74,11 +74,11 @@ CreateView.propTypes = {
   errorFetchingDescription: PropTypes.string.isRequired,
 }
 
-export default pure(CreateView)
+export default React.memo(CreateView)
 
 //styled-components
 const Wrapper = styled.div`
-  background-image: ${theme.background};
+  background-image: ${palette.background};
   position: fixed;
   top: 0;
   bottom: 0;
@@ -92,7 +92,7 @@ const Wrapper = styled.div`
 `
 
 const InputBox = styled.div`
-  background-color: ${theme.inputBg};
+  background-color: ${palette.inputBg};
   padding: 1.5em 2em;
   box-sizing: border-box;
   display: flex;
@@ -101,7 +101,7 @@ const InputBox = styled.div`
 `
 
 const Label = styled.label`
-  color: ${theme.white};
+  color: ${palette.white};
   font-size: 14px;
   letter-spacing: 1px;
   margin-bottom: .5em;
@@ -114,8 +114,8 @@ const Input = styled.input`
   box-sizing: border-box;
   width: 100%;
   border: none;
-  color: ${theme.white};
-  caret-color: ${theme.primary};
+  color: ${palette.white};
+  caret-color: ${palette.primary};
   font-weight: 700;
   font-size: 62px;
   line-height: 1.2;
@@ -127,7 +127,7 @@ const Input = styled.input`
   }
 `
 const ErrorText = styled.p`
-  color: ${theme.errorCode};
+  color: ${palette.errorCode};
   font-size: 14px;
   letter-spacing: 1px;
   margin-top: 3px;
@@ -139,8 +139,8 @@ const ClearInput = styled.span`
   top: 50%;
   transform: translateY(-50%);
   border-radius: 50%;
-  border: 1px solid ${theme.white};
-  color: ${theme.white};
+  border: 1px solid ${palette.white};
+  color: ${palette.white};
   font-size: 10px;
   height: 22px;
   width: 22px;
@@ -165,7 +165,7 @@ const PlaylistBox = styled.div`
 `
 
 const PlaylistName = styled.h1`
-  color: ${theme.primary};
+  color: ${palette.primary};
   font-size: 30px;
   line-height: 1.2;
   letter-spacing: 1.5px;
@@ -183,8 +183,8 @@ const GenerateBtn = styled.button`
   height: 40px;
   border-radius: 20px;
   outline: 0;
-  border: 2px solid ${theme.white};
-  color: ${theme.white};
+  border: 2px solid ${palette.white};
+  color: ${palette.white};
   font-size: 13px;
   text-transform: uppercase;
   cursor: pointer;
@@ -194,9 +194,9 @@ const GenerateBtn = styled.button`
   display: inline-block;
   vertical-align: middle;
   &:hover {
-    border-color: ${theme.primary};
-    color: ${theme.white};
-    background-color: ${theme.primary};
+    border-color: ${palette.primary};
+    color: ${palette.white};
+    background-color: ${palette.primary};
   }
   @media (max-width: 425px) {
     width: 170px;

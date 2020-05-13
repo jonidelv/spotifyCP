@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import lscache from 'lscache'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import colors from '../constants/colors'
+import { palette } from '../constants'
 import { Error404 } from '../components'
+import { storageKey } from '../constants'
 import {
   Login,
   Callback,
@@ -15,46 +16,35 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as LoginActions from '../actions/login'
 
-class Routes extends React.Component {
-
-  static propTypes = {
-    makeLogin: PropTypes.func.isRequired,
-    makeLogout: PropTypes.func.isRequired,
-    loggedIn: PropTypes.bool.isRequired,
+const checkTkn = (props) => () => {
+  const data = lscache.get(storageKey)
+  const token = data && data.token
+  if (!!token) {
+    props.makeLogin()
+  } else {
+    props.makeLogout()
   }
+}
 
-  componentWillMount() {
-    this.checkTkn()
-  }
+const Routes = (props) => {
+  // Similar to comp will mount or construct
+  React.useMemo(checkTkn(props), [])
+  React.useEffect(checkTkn(props))
 
-  componentWillUpdate() {
-    this.checkTkn()
-  }
-
-  checkTkn = () => {
-    if (!!lscache.get('spotifyCPTkn')) {
-      this.props.makeLogin()
-    } else {
-      this.props.makeLogout()
-    }
-  }
-
-  render() {
-    return (
-      <Router
-        basename={process.env.NODE_ENV === 'development' ? '' : 'spotifyCP'}
-      >
-        <ThemeProvider theme={colors}>
-          <Switch>
-            <Route path="/" component={Login} exact />
-            <Route path="/callback" component={Callback} exact />
-            <Route path="/create" component={Create} exact />
-            <Route component={Error404} />
-          </Switch>
-        </ThemeProvider>
-      </Router>
-    )
-  }
+  return (
+    <Router
+      basename={process.env.NODE_ENV === 'development' ? '' : 'spotifyCP'}
+    >
+      <ThemeProvider theme={palette}>
+        <Switch>
+          <Route path="/" component={Login} exact />
+          <Route path="/callback" component={Callback} exact />
+          <Route path="/create" component={Create} exact />
+          <Route component={Error404} />
+        </Switch>
+      </ThemeProvider>
+    </Router>
+  )
 }
 
 function mapStateToProps (state) {
@@ -69,6 +59,12 @@ function mapDispatchToProps (dispatch) {
     makeLogin: actions.makeLogin,
     makeLogout: actions.makeLogout,
   }
+}
+
+Routes.propTypes = {
+  makeLogin: PropTypes.func.isRequired,
+  makeLogout: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 }
 
 export default connect(

@@ -1,10 +1,9 @@
 import React from 'react'
-import pure from 'recompose/pure'
-import styled  from 'styled-components'
-import theme from '../utils/theme'
+import styled from '@emotion/styled'
+import { palette } from '../constants'
 import errorBg from '../assets/error-bg.jpg'
 
-function Error404() {
+const Error404 = () => {
   return (
     <Wrapper>
       <Overlay>
@@ -14,11 +13,11 @@ function Error404() {
   )
 }
 
-export default pure(Error404)
+export default React.memo(Error404)
 
 //styled-components
 const Wrapper = styled.div`
-  background: ${theme.background};
+  background: ${palette.background};
   position: fixed;
   top: 0;
   bottom: 0;
@@ -48,6 +47,6 @@ const Overlay = styled.div`
   flex-direction: row;
   font-size: 45px;
   font-weight: 200;
-  color: ${theme.white};
+  color: ${palette.white};
   letter-spacing: 1px;
 `
