@@ -17,7 +17,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "lscache": "1.1.0",
     "prop-types": "15.5.0",
     "query-string": "4.3.4",
