@@ -50,7 +50,7 @@
     "node-plop": "0.5.5",
     "plop": "1.7.4",
     "react-addons-test-utils": "15.6.0",
-    "react-scripts": "1.0.2",
+    "react-scripts": "1.1.5",
     "redux-devtools-extension": "2.13.0"
   },
   "eslintConfig": {
